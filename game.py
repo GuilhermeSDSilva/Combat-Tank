@@ -23,8 +23,8 @@ def game_loop():
     player_y = 390
     marcador = 12
     
-    
-    
+    W_C = Wall_Collision()
+    B_C = Barrier_Collision()
     while True:
         SCREEN.fill(SCREEN_COLOR)
         for event in pygame.event.get():
@@ -146,10 +146,9 @@ def game_loop():
             elif marcador == 2:
                 player_x +=1
                 player_y -=0.5
-
-        
-        
-
-        
+    
+        player_x = W_C.d_e(player_x)
+        player_y = W_C.c_b(player_y)
+        player_x = B_C.direita_esquerda(player_x,player_y)
         pygame.display.flip()
     pygame.quit()
