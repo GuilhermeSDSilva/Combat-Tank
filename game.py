@@ -22,6 +22,8 @@ def game_loop():
     player_x = 100
     player_y = 390
     marcador = 12
+
+    
     
     W_C = Wall_Collision()
     B_C = Barrier_Collision()
@@ -146,9 +148,14 @@ def game_loop():
             elif marcador == 2:
                 player_x +=1
                 player_y -=0.5
-    
+
+        #chamando a colisão com as paredes
         player_x = W_C.d_e(player_x)
         player_y = W_C.c_b(player_y)
+
+        #chamando as colisões com as barreiras
         player_x = B_C.direita_esquerda(player_x,player_y)
+        player_y = B_C.cima_baixo(player_x,player_y)
+        
         pygame.display.flip()
     pygame.quit()
