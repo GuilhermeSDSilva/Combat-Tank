@@ -6,6 +6,7 @@ from barrier import *
 from bullet import *
 from player2 import *
 from Score import *
+from sounds import *
 import sys
 import pygame
 
@@ -58,7 +59,8 @@ def game_loop():
     B = Bullet()
     P = Personagem()
     P2 = Personagem2()
-    S = SCORE() 
+    S = SCORE()
+    SO = SONS()
     
     #sprites das balas
     bala = B._init_()
@@ -94,6 +96,8 @@ def game_loop():
                     else:
                         marcador +=1
                 if event.key == pygame.K_z:
+                    if bala2_movimento == False:
+                        SO.tiro()
                     bala_movimento = True
                     
                 if event.key == pygame.K_UP:
@@ -111,7 +115,10 @@ def game_loop():
                     else:
                         marcador2 +=1
                 if event.key == pygame.K_SPACE:
+                    if bala2_movimento == False:
+                        SO.tiro()
                     bala2_movimento = True
+                    
                 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_w:
@@ -218,7 +225,7 @@ def game_loop():
             bala2_y = B.position_stopy(marcador2, player2_x, player2_y)
             
         # colisões da bala P1
-        if bala_movimento == True:    
+        if bala_movimento == True:  
             # parar a bala quando bater nas paredes
             if ((bala_y <=100) or (bala_y >= 700) or (bala_x <= 0) or (bala_x >=1000)) and (bala_movimento == True):
                 bala_movimento = False
@@ -227,6 +234,7 @@ def game_loop():
             bala_movimento = B.colisao_barreira_cima_baixo(bala_x,bala_y, bala_movimento)
             # se a bala do player 1 atinge o player 2
             if (player2_x -10 <=  bala_x < player2_x + 40 ) and (player2_y - 5 <= bala_y <= player2_y + 35 ):
+                SO.dest()
                 # para que o score não conte quando o player estiver na area de inicio
                 if (910 <=player2_x <=940) and (375 <= player2_y <= 400):
                     placar1 = placar1
@@ -237,7 +245,7 @@ def game_loop():
                 bala_movimento = False
             
         # colisões da bala P2
-        if bala2_movimento == True:    
+        if bala2_movimento == True:
             # parar a bala quando bater nas paredes
             if ((bala2_y <=100) or (bala2_y >= 700) or (bala2_x <= 0) or (bala2_x >=1000)) and (bala2_movimento == True):
                 bala2_movimento = False
@@ -246,6 +254,7 @@ def game_loop():
             bala2_movimento = B.colisao_barreira_cima_baixo(bala2_x,bala2_y, bala2_movimento)
             # se a bala do player 2 atinge o player 1
             if (player_x -10 <=  bala2_x < player_x + 40 ) and (player_y - 3 <= bala2_y <= player_y + 35 ):
+                SO.dest()
                 # para que o score não conte quando o player estiver na area de inicio
                 if (80 <=player_x <=110) and (375 <= player_y <= 405):
                     placar2 = placar2
