@@ -147,75 +147,39 @@ def game_loop():
         SCREEN.blit(barreira4, (450, 500))
         SCREEN.blit(barreira5, (600, 350))
         SCREEN.blit(barreira6, (710, 330))
-
+        
+        #player 1 para frente
         if frente == True:
-            if marcador == 3:
-                player_x +=1
-            elif marcador == 4:
-                player_x +=1
-                player_y +=0.5
-            elif marcador == 5:
-                player_x +=0.5
-                player_y +=1
-            elif marcador == 6:
-                player_y += 1
-            elif marcador == 7:
-                player_x -=0.5
-                player_y +=1
-            elif marcador == 8:
-                player_x -=1
-                player_y +=0.5
-            elif marcador == 9:
-                player_x -=1
-            elif marcador == 10:
-                player_x -=1
-                player_y -=0.5
-            elif marcador == 11:
-                player_x -=0.5
-                player_y -=1
-            elif marcador == 12:
-                player_y -= 1
-            elif marcador == 1:
-                player_x +=0.5
-                player_y -=1
-            elif marcador == 2:
-                player_x +=1
-                player_y -=0.5
-                
-        #PLAYER 2 MOVIMENTO
+            player_x = P.movimentox_frente(player_x,marcador)
+            player_y = P.movimentoy_frente(player_y,marcador)
+        elif frente == False:
+            player_x = player_x
+            player_y = player_y
+
+        #player 1 para tras
+        if tras == True:
+            player_x = P2.movimentox_tras(player_x,marcador)
+            player_y = P2.movimentoy_tras(player_y,marcador)
+        elif tras == False:
+            player_x = player_x
+            player_y = player_y
+            
+        #player 2 para frente
         if frente2 == True:
-            if marcador2 == 3:
-                player2_x +=1
-            elif marcador2 == 4:
-                player2_x +=1
-                player2_y +=0.5
-            elif marcador2 == 5:
-                player2_x +=0.5
-                player2_y +=1
-            elif marcador2 == 6:
-                player2_y += 1
-            elif marcador2 == 7:
-                player2_x -=0.5
-                player2_y +=1
-            elif marcador2 == 8:
-                player2_x -=1
-                player2_y +=0.5
-            elif marcador2 == 9:
-                player2_x -=1
-            elif marcador2 == 10:
-                player2_x -=1
-                player2_y -=0.5
-            elif marcador2 == 11:
-                player2_x -=0.5
-                player2_y -=1
-            elif marcador2 == 12:
-                player2_y -= 1
-            elif marcador2 == 1:
-                player2_x +=0.5
-                player2_y -=1
-            elif marcador2 == 2:
-                player2_x +=1
-                player2_y -=0.5
+            player2_x = P.movimentox_frente(player2_x,marcador2)
+            player2_y = P.movimentoy_frente(player2_y,marcador2)
+        elif frente2 == False:
+            player2_x = player2_x
+            player2_y = player2_y
+            
+        #player 2 para frente
+        if tras2 == True:
+            player2_x = P2.movimentox_tras(player2_x,marcador2)
+            player2_y = P2.movimentoy_tras(player2_y,marcador2)
+        elif tras2 == False:
+            player2_x = player2_x
+            player2_y = player2_y
+                
 
         #chamando a colisão com as paredes
         player_x = W_C.d_e(player_x)
@@ -263,10 +227,14 @@ def game_loop():
             bala_movimento = B.colisao_barreira_cima_baixo(bala_x,bala_y, bala_movimento)
             # se a bala do player 1 atinge o player 2
             if (player2_x -10 <=  bala_x < player2_x + 40 ) and (player2_y - 5 <= bala_y <= player2_y + 35 ):
+                # para que o score não conte quando o player estiver na area de inicio
+                if (910 <=player2_x <=940) and (375 <= player2_y <= 400):
+                    placar1 = placar1
+                else:
+                    placar1 = S.pontuacao(placar1)
                 player2_x = 930
                 player2_y = 390
-                placar1 = S.pontuacao(placar1)
-
+                bala_movimento = False
             
         # colisões da bala P2
         if bala2_movimento == True:    
@@ -278,9 +246,15 @@ def game_loop():
             bala2_movimento = B.colisao_barreira_cima_baixo(bala2_x,bala2_y, bala2_movimento)
             # se a bala do player 2 atinge o player 1
             if (player_x -10 <=  bala2_x < player_x + 40 ) and (player_y - 3 <= bala2_y <= player_y + 35 ):
+                # para que o score não conte quando o player estiver na area de inicio
+                if (80 <=player_x <=110) and (375 <= player_y <= 405):
+                    placar2 = placar2
+                else:
+                    placar2 = S.pontuacao(placar2)
                 player_x = 100
                 player_y = 390
-                placar2 = S.pontuacao(placar2)
+                bala2_movimento = False
+                
         #desenhar Scores
         S.placar1(placar1,SCREEN)
         S.placar2(placar2,SCREEN)
