@@ -5,6 +5,7 @@ from screen import *
 from barrier import *
 from bullet import *
 from player2 import *
+from Score import *
 import sys
 import pygame
 
@@ -15,40 +16,62 @@ def game_loop():
     pygame.init()
     #desnhar tela( está dentro de screen)
     SCREEN = screen
-    
+
+    #variaveis do player 1
     player = pygame.image.load("img/tank(1).png")
     player = pygame.transform.scale(player, (40, 40))
+    #variaveis do player 2
     player2 = pygame.image.load("img/tank(2).png")
     player2 = pygame.transform.scale(player2, (40, 40))
+
+    #direcões do player 1
     frente = False
     tras = False
     direita = False
     esquerda = False
+    #direcões do player 2
     frente2 = False
     tras2 = False
     direita2 = False
     esquerda2 = False
+    #posicões do player 1
     player_x = 100
     player_y = 390
+    #posicões doplayer 2
     player2_x = 930
     player2_y = 390
+    #marcador de posicão do player 1
     marcador = 12
+    #marcador de posicão do player 2
     marcador2 = 12
+    #marcador de movimento da bala 1
     bala_movimento = False
+    #marcador de movimento da bala 2
     bala2_movimento = False
+    #direcão da bala 1
     bala_direcao = marcador
+    #direcão da bala 2
     bala2_direcao = marcador2
+    
     W_C = Wall_Collision()
     B_C = Barrier_Collision()
     B = Bullet()
-    bala = B._init_()
-    bala2 = B.bala2()
     P = Personagem()
     P2 = Personagem2()
+    S = SCORE() 
+    
+    #sprites das balas
+    bala = B._init_()
+    bala2 = B.bala2()
+
+    #posicões das balas
     bala_x = player_x
     bala_y = player_y
     bala2_x = player2_x
     bala2_y = player2_y
+
+    placar1 = 0
+    placar2 = 0
 
     while True:
         SCREEN.fill(SCREEN_COLOR)
@@ -242,6 +265,7 @@ def game_loop():
             if (player2_x -10 <=  bala_x < player2_x + 40 ) and (player2_y - 5 <= bala_y <= player2_y + 35 ):
                 player2_x = 930
                 player2_y = 390
+                placar1 = S.pontuacao(placar1)
 
             
         # colisões da bala P2
@@ -256,6 +280,10 @@ def game_loop():
             if (player_x -10 <=  bala2_x < player_x + 40 ) and (player_y - 3 <= bala2_y <= player_y + 35 ):
                 player_x = 100
                 player_y = 390
-            
+                placar2 = S.pontuacao(placar2)
+        #desenhar Scores
+        S.placar1(placar1,SCREEN)
+        S.placar2(placar2,SCREEN)
+        
         pygame.display.flip()
     pygame.quit()
