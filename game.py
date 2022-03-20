@@ -1,10 +1,9 @@
-from player import *
+from players import *
 from config import *
 from wall import *
 from screen import *
 from barrier import *
 from bullet import *
-from player2 import *
 from Score import *
 from sounds import *
 import sys
@@ -57,8 +56,7 @@ def game_loop():
     W_C = Wall_Collision()
     B_C = Barrier_Collision()
     B = Bullet()
-    P = Personagem()
-    P2 = Personagem2()
+    P = Personagens()
     S = SCORE()
     SO = SONS()
     
@@ -96,7 +94,7 @@ def game_loop():
                     else:
                         marcador +=1
                 if event.key == pygame.K_z:
-                    if bala2_movimento == False:
+                    if bala_movimento == False:
                         SO.tiro()
                     bala_movimento = True
                     
@@ -136,10 +134,10 @@ def game_loop():
                 if event.key == pygame.K_LEFT:
                     esquerda2 = False
                 if event.key == pygame.K_RIGHT:
-                    direita = False
+                    direita2 = False
                     
         player = P.sprites(marcador)
-        player2 = P2.sprites2(marcador2)
+        player2 = P.sprites2(marcador2)
 
         
         #desenhar paredes (está dentro de wall)      
@@ -165,8 +163,8 @@ def game_loop():
 
         #player 1 para tras
         if tras == True:
-            player_x = P2.movimentox_tras(player_x,marcador)
-            player_y = P2.movimentoy_tras(player_y,marcador)
+            player_x = P.movimentox_tras(player_x,marcador)
+            player_y = P.movimentoy_tras(player_y,marcador)
         elif tras == False:
             player_x = player_x
             player_y = player_y
@@ -181,8 +179,8 @@ def game_loop():
             
         #player 2 para frente
         if tras2 == True:
-            player2_x = P2.movimentox_tras(player2_x,marcador2)
-            player2_y = P2.movimentoy_tras(player2_y,marcador2)
+            player2_x = P.movimentox_tras(player2_x,marcador2)
+            player2_y = P.movimentoy_tras(player2_y,marcador2)
         elif tras2 == False:
             player2_x = player2_x
             player2_y = player2_y
@@ -219,7 +217,7 @@ def game_loop():
             bala2_direcao = bala2_direcao
             bala2_x = B.moviment_x(bala2_x, bala2_movimento,bala2_direcao)
             bala2_y = B.moviment_y(bala2_y, bala2_movimento,bala2_direcao)
-        elif bala_movimento == False:
+        elif bala2_movimento == False:
             bala2_direcao = marcador2
             bala2_x = B.position_stopx(marcador2, player2_x, player2_y)
             bala2_y = B.position_stopy(marcador2, player2_x, player2_y)
